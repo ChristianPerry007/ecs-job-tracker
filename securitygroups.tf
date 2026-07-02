@@ -44,3 +44,26 @@ resource "aws_vpc_security_group_egress_rule" "ecs_allow_all_egress" {
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
+
+# SG 3 for RDS
+
+resource "aws_security_group" "sg3_rds_job_tracker" {
+  name        = var.sg_3_rds_job_tracker
+  description = "sg for rds"
+  vpc_id      = aws_vpc.job_tracker_ecs_vpc.id
+
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_ecs_to_rds" {
+  security_group_id            = aws_security_group.sg3_rds_job_tracker.id
+  referenced_security_group_id = aws_security_group.sg2_ecs_job_tracker.id
+  from_port                    = 5432
+  ip_protocol                  = "tcp"
+  to_port                      = 5432
+}
+
+resource "aws_vpc_security_group_egress_rule" "rds_allow_all_egress" {
+  security_group_id = aws_security_group.sg3_rds_job_tracker.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}

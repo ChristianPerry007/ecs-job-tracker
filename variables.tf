@@ -27,6 +27,11 @@ variable "data_subnet_job_tracker_cidrs" {
   type        = list(string)
 }
 
+variable "data_subnet_group" {
+  description = "subnet group for rds"
+  type        = string
+}
+
 variable "availability_zones_job_tracker" {
   description = "AZs for the subnets"
   type        = list(string)
@@ -41,6 +46,11 @@ variable "sg_1_alb_job_tracker" {
 
 variable "sg_2_ecs_job_tracker" {
   description = "sg for ecs"
+  type        = string
+}
+
+variable "sg_3_rds_job_tracker" {
+  description = "sg for rds"
   type        = string
 }
 

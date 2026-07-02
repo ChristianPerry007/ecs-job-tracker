@@ -39,6 +39,28 @@ resource "aws_ecs_task_definition" "ecs_job_tracker_task" {
           "awslogs-stream-prefix" = "ecs"
         }
       }
+      environment = [
+        {
+          name  = "DB_HOST"
+          value = aws_db_instance.job_tracker_rds_instance.address
+        },
+        {
+          name  = "DB_PORT"
+          value = "5432"
+        },
+        {
+          name  = "DB_NAME"
+          value = aws_db_instance.job_tracker_rds_instance.db_name
+        },
+        {
+          name  = "DB_USER"
+          value = aws_db_instance.job_tracker_rds_instance.username
+        },
+        {
+          name  = "DB_PASSWORD"
+          value = random_password.rds_password.result
+        }
+      ]
     }
   ])
 }
@@ -53,10 +75,10 @@ resource "aws_cloudwatch_log_group" "ecs_log_group" {
 # ECS Service
 
 resource "aws_ecs_service" "ecs_job_tracker_service" {
-  name            = var.ecs_job_tracker_service
-  cluster         = aws_ecs_cluster.ecs_cluster_job_tracker.id
-  task_definition = aws_ecs_task_definition.ecs_job_tracker_task.arn
-  desired_count   = 2
+  name                 = var.ecs_job_tracker_service
+  cluster              = aws_ecs_cluster.ecs_cluster_job_tracker.id
+  task_definition      = aws_ecs_task_definition.ecs_job_tracker_task.arn
+  desired_count        = 2
   force_new_deployment = true
 
   network_configuration {
@@ -67,7 +89,7 @@ resource "aws_ecs_service" "ecs_job_tracker_service" {
 
   capacity_provider_strategy {
     capacity_provider = aws_ecs_capacity_provider.ecs_cp.name
-    weight = 1
+    weight            = 1
   }
 
   load_balancer {
