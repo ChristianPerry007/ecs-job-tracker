@@ -90,6 +90,11 @@ variable "ecs_instance_profile" {
   type        = string
 }
 
+variable "github_actions_role" {
+  description = "IAM role for GitHub Actions to assume the ECS role"
+  type        = string
+}
+
 # ECS
 
 variable "ecs_cluster_job_tracker" {
