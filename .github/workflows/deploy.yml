@@ -25,11 +25,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+        
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role-cjp
           aws-region: ${{ env.AWS_REGION }}
+
+          # OIDC authentication - no static credentials
+
 
       - name: Login to Amazon ECR
         id: login-ecr
