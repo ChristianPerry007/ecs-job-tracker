@@ -32,7 +32,7 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role-cjp
           aws-region: ${{ env.AWS_REGION }}
 
-          # OIDC authentication -  no static credentials
+          # OIDC authentication - no static credentials
 
 
       - name: Login to Amazon ECR
